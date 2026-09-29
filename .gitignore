@@ -1,0 +1,37 @@
+# Node
+node_modules/
+.next/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Video detector generated frames
+backend/video-detector/predict/
+
+# Uploaded/test videos
+backend/video-detector/static/uploads/
+
+# Generated detector files
+backend/video-detector/static/generated/
+
+# Temporary files
+*.tmp
+*.temp
+
+# OS files
+.DS_Store
+Thumbs.db

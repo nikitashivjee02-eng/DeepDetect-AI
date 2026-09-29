@@ -1,0 +1,7 @@
+{
+  "name": "final-arranged",
+  "private": true,
+  "scripts": {
+    "dev": "node scripts/start-all.cjs"
+  }
+}

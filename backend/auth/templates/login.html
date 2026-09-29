@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login - AI Deepfake Detector</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #020617;
+            color: white;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 430px;
+
+            padding: 35px;
+
+            background: #0f172a;
+
+            border: 1px solid #1e293b;
+            border-radius: 18px;
+        }
+
+        .logo {
+            width: 65px;
+            height: 65px;
+
+            margin: 0 auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #172554;
+            border-radius: 16px;
+
+            font-size: 32px;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0 0 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+
+            margin: 16px 0 8px;
+
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+
+            padding: 13px;
+
+            background: #020617;
+            color: white;
+
+            border: 1px solid #334155;
+            border-radius: 9px;
+
+            outline: none;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: #3b82f6;
+        }
+
+        .password-box {
+            position: relative;
+        }
+
+        .password-box input {
+            padding-right: 45px;
+        }
+
+        .toggle {
+            position: absolute;
+
+            right: 8px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: none;
+            background: transparent;
+
+            cursor: pointer;
+
+            font-size: 18px;
+        }
+
+        button.login {
+            width: 100%;
+
+            margin-top: 25px;
+
+            padding: 14px;
+
+            border: none;
+            border-radius: 9px;
+
+            background: #2563eb;
+            color: white;
+
+            font-size: 15px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        button.login:hover {
+            background: #3b82f6;
+        }
+
+        .message {
+            margin-bottom: 15px;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+        }
+
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+
+        .success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #86efac;
+        }
+
+        .signup {
+            text-align: center;
+
+            margin-top: 22px;
+
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+        .signup a {
+            color: #60a5fa;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">
+        🛡️
+    </div>
+
+    <h1>
+        AI Deepfake Detector
+    </h1>
+
+    <p class="subtitle">
+        Login to your account
+    </p>
+
+
+    {% if error %}
+        <div class="message error">
+            ❌ {{ error }}
+        </div>
+    {% endif %}
+
+
+    {% if success %}
+        <div class="message success">
+            ✅ {{ success }}
+        </div>
+    {% endif %}
+
+
+    <form
+        method="POST"
+        action="/login"
+    >
+
+        <label for="email">
+            Email
+        </label>
+
+        <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+        >
+
+
+        <label for="password">
+            Password
+        </label>
+
+        <div class="password-box">
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+            >
+
+            <button
+                type="button"
+                class="toggle"
+                onclick="togglePassword()"
+            >
+                👁️
+            </button>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="login"
+        >
+            Login
+        </button>
+
+    </form>
+
+
+    <div class="signup">
+
+        Don't have an account?
+
+        <a href="/signup">
+            Sign up
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+    function togglePassword() {
+
+        const password =
+            document.getElementById("password");
+
+        const button =
+            document.querySelector(".toggle");
+
+        if (password.type === "password") {
+
+            password.type = "text";
+
+            button.textContent = "🙈";
+
+        } else {
+
+            password.type = "password";
+
+            button.textContent = "👁️";
+
+        }
+    }
+</script>
+
+</body>
+</html>

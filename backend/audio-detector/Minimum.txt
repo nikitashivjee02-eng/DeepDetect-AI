@@ -1,0 +1,855 @@
+Minimum  : 
+Property : 
+
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python prepare_dataset.py
+Starting dataset preparation...
+ai: ai_001.wav.mp3 -> 1 clips
+ai: ai_002.wav.mp3 -> 7 clips
+ai: ai_003.wav.mp3 -> 13 clips
+ai: ai_004.wav.mp3 -> 11 clips
+ai: ai_005.wav.mp3 -> 11 clips
+real: real_001.wav -> 1 clips
+real: real_002.mp3 -> 0 clips
+real: real_003.mp3 -> 0 clips
+real: real_004.mp3 -> 0 clips
+real: real_006.m4a -> 2 clips
+Dataset preparation completed!
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-ChildItem dataset\real -File | Select-Object Name, Length
+
+Name         Length
+----         ------
+real_001.wav 129102
+real_002.mp3  62976
+real_003.mp3  92160
+real_004.mp3  49152
+real_005.ogg  21042
+real_006.m4a 296350
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-Content prepare_dataset.py | Select-String "CLIP_DURATION|fix_length|ogg"
+
+CLIP_DURATION = 4
+            clip_samples = SAMPLE_RATE * CLIP_DURATION
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-Content prepare_dataset.py | Select-String "CLIP_DURATION|fix_length|ogg"
+
+CLIP_DURATION = 4
+            clip_samples = SAMPLE_RATE * CLIP_DURATION
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Remove-Item processed_dataset -Recurse -Force
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python prepare_dataset.py
+Starting dataset preparation...
+ai: ai_001.wav.mp3 -> 1 clips
+ai: ai_002.wav.mp3 -> 7 clips
+ai: ai_003.wav.mp3 -> 13 clips
+ai: ai_004.wav.mp3 -> 11 clips
+ai: ai_005.wav.mp3 -> 11 clips
+real: real_001.wav -> 1 clips
+real: real_002.mp3 -> 0 clips
+real: real_003.mp3 -> 0 clips
+real: real_004.mp3 -> 0 clips
+real: real_006.m4a -> 2 clips
+Dataset preparation completed!
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-Location
+
+Path                                                                  
+----                                                                  
+C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-Item .\prepare_dataset.py | Select-Object FullName, Length, LastWriteTime
+
+FullName                                                                                  Length LastWriteTime      
+--------                                                                                  ------ -------------      
+C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector\prepare_dataset.py   2462 11-08-2026 20:42:58
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-Content .\prepare_dataset.py -TotalCount 20
+import os
+import subprocess
+import librosa
+import soundfile as sf
+
+DATASET_DIR = "dataset"
+PROCESSED_DIR = "processed_dataset"
+
+SAMPLE_RATE = 16000
+CLIP_DURATION = 4
+
+
+def convert_to_wav(input_file, output_file):
+    command = [
+        "ffmpeg",
+        "-y",
+        "-i",
+        input_file,
+        "-ar",
+        str(SAMPLE_RATE),
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Select-String -Path .\prepare_dataset.py -Pattern "CLIP_DURATION|fix_length|ogg|continue"
+
+prepare_dataset.py:10:CLIP_DURATION = 4
+prepare_dataset.py:66:            clip_samples = SAMPLE_RATE * CLIP_DURATION
+prepare_dataset.py:79:                    continue
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Select-String -Path .\prepare_dataset.py -Pattern "CLIP_DURATION|fix_length|ogg|continue"
+
+prepare_dataset.py:10:CLIP_DURATION = 4
+prepare_dataset.py:66:            clip_samples = SAMPLE_RATE * CLIP_DURATION
+prepare_dataset.py:79:                    continue
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Remove-Item processed_dataset -Recurse -Force
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\prepare_dataset.py
+Starting dataset preparation...
+ai: ai_001.wav.mp3 -> 1 clips
+ai: ai_002.wav.mp3 -> 7 clips
+ai: ai_003.wav.mp3 -> 13 clips
+ai: ai_004.wav.mp3 -> 11 clips
+ai: ai_005.wav.mp3 -> 11 clips
+real: real_001.wav -> 1 clips
+real: real_002.mp3 -> 0 clips
+real: real_003.mp3 -> 0 clips
+real: real_004.mp3 -> 0 clips
+real: real_006.m4a -> 2 clips
+Dataset preparation completed!
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-ChildItem processed_dataset\real -File | Measure-Object
+
+
+Count    : 3
+Average  : 
+Sum      : 
+Maximum  : 
+Minimum  : 
+Property : 
+
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> notepad prepare_dataset.py
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-Content .\prepare_dataset.py -TotalCount 12
+import os
+import subprocess
+import librosa
+import soundfile as sf
+
+DATASET_DIR = "dataset"
+PROCESSED_DIR = "processed_dataset"
+
+SAMPLE_RATE = 16000
+CLIP_DURATION = 4
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-Content .\prepare_dataset.py -TotalCount 12
+@'
+import os
+import subprocess
+import librosa
+import soundfile as sf
+
+DATASET_DIR = "dataset"
+PROCESSED_DIR = "processed_dataset"
+
+SAMPLE_RATE = 16000
+CLIP_DURATION = 2
+STEP_DURATION = 1
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Select-String -Path .\prepare_dataset.py -Pattern "CLIP_DURATION|fix_length|ogg|continue"
+
+prepare_dataset.py:11:CLIP_DURATION = 2
+prepare_dataset.py:35:        if f.lower().endswith((".wav", ".mp3", ".m4a", ".ogg"))
+prepare_dataset.py:61:            clip_samples = SAMPLE_RATE * CLIP_DURATION
+prepare_dataset.py:68:                clip = librosa.util.fix_length(
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> (Get-Content .\prepare_dataset.py) | Select-Object -Skip 1 | Set-Content -Encoding UTF8 .\prepare_dataset.py
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-Content .\prepare_dataset.py -TotalCount 5
+import os
+import subprocess
+import librosa
+import soundfile as sf
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Remove-Item processed_dataset -Recurse -Force
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\prepare_dataset.py
+  File "C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector\prepare_dataset.py", line 131
+    '@ | Set-Content -Encoding UTF8 .\prepare_dataset.py
+    ^
+SyntaxError: unterminated string literal (detected at line 131)
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-Content .\prepare_dataset.py -Tail 15
+        except Exception as e:
+            print(f"ERROR processing {filename}: {e}")
+
+
+print("================================")
+print("STARTING DATASET PREPARATION")
+print("================================")
+
+process_class("ai")
+process_class("real")
+
+print("\n================================")
+print("DATASET PREPARATION COMPLETED")
+print("================================")
+'@ | Set-Content -Encoding UTF8 .\prepare_dataset.py
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> (Get-Content .\prepare_dataset.py) | Where-Object { $_ -ne "'@ | Set-Content -Encoding UTF8 .\prepare_dataset.py" } | Set-Content -Encoding UTF8 .\prepare_dataset.py
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-Content .\prepare_dataset.py -Tail 10
+print("================================")
+print("STARTING DATASET PREPARATION")
+print("================================")
+
+process_class("ai")
+process_class("real")
+
+print("\n================================")
+print("DATASET PREPARATION COMPLETED")
+print("================================")
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\prepare_dataset.py
+================================
+STARTING DATASET PREPARATION
+================================
+
+AI FILES FOUND: 5
+Processing: ai_001.wav.mp3
+ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+  built with gcc 16.1.0 (Rev2, Built by MSYS2 project)
+  configuration: --enable-gpl --enable-version3 --enable-shared --disable-w32threads --disable-autodetect --enable-cairo --enable-fontconfig --enable-iconv --enable-gnutls --enable-lcms2 --enable-libxml2 --enable-gmp --enable-bzlib --enable-lzma --enable-libsnappy --enable-zlib --enable-librist --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-sdl2 --enable-libaribb24 --enable-libaribcaption --enable-libdav1d --enable-libdavs2 --enable-libopenjpeg --enable-libquirc --enable-libuavs3d --enable-libxevd --enable-libzvbi --enable-liboapv --enable-libqrencode --enable-librav1e --enable-libsvtav1 --enable-libvvenc --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxeve --enable-libxvid --enable-libaom --enable-libjxl --enable-libsvtjpegxs --enable-libvpx --enable-mediafoundation --enable-libass --enable-frei0r --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-liblensfun --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-dxva2 --enable-d3d11va --enable-d3d12va --enable-ffnvcodec --enable-libvpl --enable-nvdec --enable-nvenc --enable-vaapi --enable-vulkan --enable-libplacebo --enable-opencl --enable-libcdio --enable-openal --enable-libgme --enable-libmodplug --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libshine --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libcodec2 --enable-libilbc --enable-libgsm --enable-liblc3 --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-ladspa --enable-libbs2b --enable-libflite --enable-libmysofa --enable-librubberband --enable-libsoxr --enable-chromaprint --enable-whisper
+  libavutil      61.  1.100 / 61.  1.100
+  libavcodec     63.  1.100 / 63.  1.100
+  libavformat    63.  1.100 / 63.  1.100
+  libavdevice    63.  1.100 / 63.  1.100
+  libavfilter    12.  1.100 / 12.  1.100
+  libswscale     10.  1.100 / 10.  1.100
+  libswresample   7.  1.100 /  7.  1.100
+[in#0/mp3 @ 00000264931b62c0] Estimating duration from bitrate, this may be inaccurate
+Input #0, mp3, from 'dataset\ai\ai_001.wav.mp3':
+  Metadata:
+    encoder         : Lavf60.16.101
+  Duration: 00:00:06.16, start: 0.000000, bitrate: 149 kb/s
+  Stream #0:0: Audio: mp3 (mp3float), 44100 Hz, mono, fltp, 128 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (mp3 (mp3float) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to 'processed_dataset\ai\ai_001.wav_converted.wav':
+  Metadata:
+    ISFT            : Lavf63.1.100
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+    Metadata:
+      encoder         : Lavc63.1.100 pcm_s16le
+[out#0/wav @ 0000026493215b80] video:0KiB audio:193KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.039538%
+size=     193KiB time=00:00:06.16 bitrate= 256.1kbits/s speed= 279x elapsed=0:00:00.02    
+ai: ai_001.wav.mp3 -> 5 clips
+Processing: ai_002.wav.mp3
+ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+  built with gcc 16.1.0 (Rev2, Built by MSYS2 project)
+  configuration: --enable-gpl --enable-version3 --enable-shared --disable-w32threads --disable-autodetect --enable-cairo --enable-fontconfig --enable-iconv --enable-gnutls --enable-lcms2 --enable-libxml2 --enable-gmp --enable-bzlib --enable-lzma --enable-libsnappy --enable-zlib --enable-librist --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-sdl2 --enable-libaribb24 --enable-libaribcaption --enable-libdav1d --enable-libdavs2 --enable-libopenjpeg --enable-libquirc --enable-libuavs3d --enable-libxevd --enable-libzvbi --enable-liboapv --enable-libqrencode --enable-librav1e --enable-libsvtav1 --enable-libvvenc --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxeve --enable-libxvid --enable-libaom --enable-libjxl --enable-libsvtjpegxs --enable-libvpx --enable-mediafoundation --enable-libass --enable-frei0r --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-liblensfun --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-dxva2 --enable-d3d11va --enable-d3d12va --enable-ffnvcodec --enable-libvpl --enable-nvdec --enable-nvenc --enable-vaapi --enable-vulkan --enable-libplacebo --enable-opencl --enable-libcdio --enable-openal --enable-libgme --enable-libmodplug --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libshine --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libcodec2 --enable-libilbc --enable-libgsm --enable-liblc3 --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-ladspa --enable-libbs2b --enable-libflite --enable-libmysofa --enable-librubberband --enable-libsoxr --enable-chromaprint --enable-whisper
+  libavutil      61.  1.100 / 61.  1.100
+  libavcodec     63.  1.100 / 63.  1.100
+  libavformat    63.  1.100 / 63.  1.100
+  libavdevice    63.  1.100 / 63.  1.100
+  libavfilter    12.  1.100 / 12.  1.100
+  libswscale     10.  1.100 / 10.  1.100
+  libswresample   7.  1.100 /  7.  1.100
+[in#0/mp3 @ 000001d010777240] Estimating duration from bitrate, this may be inaccurate
+Input #0, mp3, from 'dataset\ai\ai_002.wav.mp3':
+  Metadata:
+    encoder         : Lavf60.16.101
+  Duration: 00:00:29.68, start: 0.000000, bitrate: 132 kb/s
+  Stream #0:0: Audio: mp3 (mp3float), 44100 Hz, mono, fltp, 128 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (mp3 (mp3float) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to 'processed_dataset\ai\ai_002.wav_converted.wav':
+  Metadata:
+    ISFT            : Lavf63.1.100
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+    Metadata:
+      encoder         : Lavc63.1.100 pcm_s16le
+[out#0/wav @ 000001d0107d5540] video:0KiB audio:927KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.008214%
+size=     927KiB time=00:00:29.67 bitrate= 256.0kbits/s speed= 228x elapsed=0:00:00.13    
+ai: ai_002.wav.mp3 -> 28 clips
+Processing: ai_003.wav.mp3
+ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+  built with gcc 16.1.0 (Rev2, Built by MSYS2 project)
+  configuration: --enable-gpl --enable-version3 --enable-shared --disable-w32threads --disable-autodetect --enable-cairo --enable-fontconfig --enable-iconv --enable-gnutls --enable-lcms2 --enable-libxml2 --enable-gmp --enable-bzlib --enable-lzma --enable-libsnappy --enable-zlib --enable-librist --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-sdl2 --enable-libaribb24 --enable-libaribcaption --enable-libdav1d --enable-libdavs2 --enable-libopenjpeg --enable-libquirc --enable-libuavs3d --enable-libxevd --enable-libzvbi --enable-liboapv --enable-libqrencode --enable-librav1e --enable-libsvtav1 --enable-libvvenc --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxeve --enable-libxvid --enable-libaom --enable-libjxl --enable-libsvtjpegxs --enable-libvpx --enable-mediafoundation --enable-libass --enable-frei0r --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-liblensfun --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-dxva2 --enable-d3d11va --enable-d3d12va --enable-ffnvcodec --enable-libvpl --enable-nvdec --enable-nvenc --enable-vaapi --enable-vulkan --enable-libplacebo --enable-opencl --enable-libcdio --enable-openal --enable-libgme --enable-libmodplug --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libshine --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libcodec2 --enable-libilbc --enable-libgsm --enable-liblc3 --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-ladspa --enable-libbs2b --enable-libflite --enable-libmysofa --enable-librubberband --enable-libsoxr --enable-chromaprint --enable-whisper
+  libavutil      61.  1.100 / 61.  1.100
+  libavcodec     63.  1.100 / 63.  1.100
+  libavformat    63.  1.100 / 63.  1.100
+  libavdevice    63.  1.100 / 63.  1.100
+  libavfilter    12.  1.100 / 12.  1.100
+  libswscale     10.  1.100 / 10.  1.100
+  libswresample   7.  1.100 /  7.  1.100
+[in#0/mp3 @ 0000020faa987140] Estimating duration from bitrate, this may be inaccurate
+Input #0, mp3, from 'dataset\ai\ai_003.wav.mp3':
+  Metadata:
+    encoder         : Lavf60.16.101
+  Duration: 00:00:52.79, start: 0.000000, bitrate: 130 kb/s
+  Stream #0:0: Audio: mp3 (mp3float), 44100 Hz, mono, fltp, 128 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (mp3 (mp3float) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to 'processed_dataset\ai\ai_003.wav_converted.wav':
+  Metadata:
+    ISFT            : Lavf63.1.100
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+    Metadata:
+      encoder         : Lavc63.1.100 pcm_s16le
+[out#0/wav @ 0000020faa9e6080] video:0KiB audio:1650KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.004617%
+size=    1650KiB time=00:00:52.79 bitrate= 256.0kbits/s speed= 447x elapsed=0:00:00.11    
+ai: ai_003.wav.mp3 -> 51 clips
+Processing: ai_004.wav.mp3
+ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+  built with gcc 16.1.0 (Rev2, Built by MSYS2 project)
+  configuration: --enable-gpl --enable-version3 --enable-shared --disable-w32threads --disable-autodetect --enable-cairo --enable-fontconfig --enable-iconv --enable-gnutls --enable-lcms2 --enable-libxml2 --enable-gmp --enable-bzlib --enable-lzma --enable-libsnappy --enable-zlib --enable-librist --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-sdl2 --enable-libaribb24 --enable-libaribcaption --enable-libdav1d --enable-libdavs2 --enable-libopenjpeg --enable-libquirc --enable-libuavs3d --enable-libxevd --enable-libzvbi --enable-liboapv --enable-libqrencode --enable-librav1e --enable-libsvtav1 --enable-libvvenc --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxeve --enable-libxvid --enable-libaom --enable-libjxl --enable-libsvtjpegxs --enable-libvpx --enable-mediafoundation --enable-libass --enable-frei0r --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-liblensfun --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-dxva2 --enable-d3d11va --enable-d3d12va --enable-ffnvcodec --enable-libvpl --enable-nvdec --enable-nvenc --enable-vaapi --enable-vulkan --enable-libplacebo --enable-opencl --enable-libcdio --enable-openal --enable-libgme --enable-libmodplug --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libshine --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libcodec2 --enable-libilbc --enable-libgsm --enable-liblc3 --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-ladspa --enable-libbs2b --enable-libflite --enable-libmysofa --enable-librubberband --enable-libsoxr --enable-chromaprint --enable-whisper
+  libavutil      61.  1.100 / 61.  1.100
+  libavcodec     63.  1.100 / 63.  1.100
+  libavformat    63.  1.100 / 63.  1.100
+  libavdevice    63.  1.100 / 63.  1.100
+  libavfilter    12.  1.100 / 12.  1.100
+  libswscale     10.  1.100 / 10.  1.100
+  libswresample   7.  1.100 /  7.  1.100
+[in#0/mp3 @ 000001b61df873c0] Estimating duration from bitrate, this may be inaccurate
+Input #0, mp3, from 'dataset\ai\ai_004.wav.mp3':
+  Metadata:
+    encoder         : Lavf60.16.101
+  Duration: 00:00:44.33, start: 0.000000, bitrate: 131 kb/s
+  Stream #0:0: Audio: mp3 (mp3float), 44100 Hz, mono, fltp, 128 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (mp3 (mp3float) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to 'processed_dataset\ai\ai_004.wav_converted.wav':
+  Metadata:
+    ISFT            : Lavf63.1.100
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+    Metadata:
+      encoder         : Lavc63.1.100 pcm_s16le
+[out#0/wav @ 000001b61dfe5c40] video:0KiB audio:1385KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.005499%
+size=    1385KiB time=00:00:44.32 bitrate= 256.0kbits/s speed= 314x elapsed=0:00:00.14    
+ai: ai_004.wav.mp3 -> 43 clips
+Processing: ai_005.wav.mp3
+ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+  built with gcc 16.1.0 (Rev2, Built by MSYS2 project)
+  configuration: --enable-gpl --enable-version3 --enable-shared --disable-w32threads --disable-autodetect --enable-cairo --enable-fontconfig --enable-iconv --enable-gnutls --enable-lcms2 --enable-libxml2 --enable-gmp --enable-bzlib --enable-lzma --enable-libsnappy --enable-zlib --enable-librist --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-sdl2 --enable-libaribb24 --enable-libaribcaption --enable-libdav1d --enable-libdavs2 --enable-libopenjpeg --enable-libquirc --enable-libuavs3d --enable-libxevd --enable-libzvbi --enable-liboapv --enable-libqrencode --enable-librav1e --enable-libsvtav1 --enable-libvvenc --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxeve --enable-libxvid --enable-libaom --enable-libjxl --enable-libsvtjpegxs --enable-libvpx --enable-mediafoundation --enable-libass --enable-frei0r --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-liblensfun --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-dxva2 --enable-d3d11va --enable-d3d12va --enable-ffnvcodec --enable-libvpl --enable-nvdec --enable-nvenc --enable-vaapi --enable-vulkan --enable-libplacebo --enable-opencl --enable-libcdio --enable-openal --enable-libgme --enable-libmodplug --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libshine --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libcodec2 --enable-libilbc --enable-libgsm --enable-liblc3 --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-ladspa --enable-libbs2b --enable-libflite --enable-libmysofa --enable-librubberband --enable-libsoxr --enable-chromaprint --enable-whisper
+  libavutil      61.  1.100 / 61.  1.100
+  libavcodec     63.  1.100 / 63.  1.100
+  libavformat    63.  1.100 / 63.  1.100
+  libavdevice    63.  1.100 / 63.  1.100
+  libavfilter    12.  1.100 / 12.  1.100
+  libswscale     10.  1.100 / 10.  1.100
+  libswresample   7.  1.100 /  7.  1.100
+[in#0/mp3 @ 0000020ee7445e00] Estimating duration from bitrate, this may be inaccurate
+Input #0, mp3, from 'dataset\ai\ai_005.wav.mp3':
+  Metadata:
+    encoder         : Lavf60.16.101
+  Duration: 00:00:44.33, start: 0.000000, bitrate: 131 kb/s
+  Stream #0:0: Audio: mp3 (mp3float), 44100 Hz, mono, fltp, 128 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (mp3 (mp3float) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to 'processed_dataset\ai\ai_005.wav_converted.wav':
+  Metadata:
+    ISFT            : Lavf63.1.100
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+    Metadata:
+      encoder         : Lavc63.1.100 pcm_s16le
+[out#0/wav @ 0000020ee74a6840] video:0KiB audio:1385KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.005499%
+size=    1385KiB time=00:00:44.32 bitrate= 256.0kbits/s speed= 445x elapsed=0:00:00.09    
+ai: ai_005.wav.mp3 -> 43 clips
+
+REAL FILES FOUND: 6
+Processing: real_001.wav
+ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+  built with gcc 16.1.0 (Rev2, Built by MSYS2 project)
+  configuration: --enable-gpl --enable-version3 --enable-shared --disable-w32threads --disable-autodetect --enable-cairo --enable-fontconfig --enable-iconv --enable-gnutls --enable-lcms2 --enable-libxml2 --enable-gmp --enable-bzlib --enable-lzma --enable-libsnappy --enable-zlib --enable-librist --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-sdl2 --enable-libaribb24 --enable-libaribcaption --enable-libdav1d --enable-libdavs2 --enable-libopenjpeg --enable-libquirc --enable-libuavs3d --enable-libxevd --enable-libzvbi --enable-liboapv --enable-libqrencode --enable-librav1e --enable-libsvtav1 --enable-libvvenc --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxeve --enable-libxvid --enable-libaom --enable-libjxl --enable-libsvtjpegxs --enable-libvpx --enable-mediafoundation --enable-libass --enable-frei0r --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-liblensfun --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-dxva2 --enable-d3d11va --enable-d3d12va --enable-ffnvcodec --enable-libvpl --enable-nvdec --enable-nvenc --enable-vaapi --enable-vulkan --enable-libplacebo --enable-opencl --enable-libcdio --enable-openal --enable-libgme --enable-libmodplug --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libshine --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libcodec2 --enable-libilbc --enable-libgsm --enable-liblc3 --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-ladspa --enable-libbs2b --enable-libflite --enable-libmysofa --enable-librubberband --enable-libsoxr --enable-chromaprint --enable-whisper
+  libavutil      61.  1.100 / 61.  1.100
+  libavcodec     63.  1.100 / 63.  1.100
+  libavformat    63.  1.100 / 63.  1.100
+  libavdevice    63.  1.100 / 63.  1.100
+  libavfilter    12.  1.100 / 12.  1.100
+  libswscale     10.  1.100 / 10.  1.100
+  libswresample   7.  1.100 /  7.  1.100
+[aist#0:0/pcm_s16le @ 00000128e7912400] Guessed Channel Layout: mono
+Input #0, wav, from 'dataset\real\real_001.wav':
+  Metadata:
+    encoder         : Lavf63.1.100
+  Duration: 00:00:04.03, bitrate: 256 kb/s
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (pcm_s16le (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to 'processed_dataset\real\real_001_converted.wav':
+  Metadata:
+    ISFT            : Lavf63.1.100
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+    Metadata:
+      encoder         : Lavc63.1.100 pcm_s16le
+[out#0/wav @ 00000128e7965f00] video:0KiB audio:126KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.060454%
+size=     126KiB time=00:00:04.03 bitrate= 256.2kbits/s speed=61.6x elapsed=0:00:00.06    
+real: real_001.wav -> 3 clips
+Processing: real_002.mp3
+ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+  built with gcc 16.1.0 (Rev2, Built by MSYS2 project)
+  configuration: --enable-gpl --enable-version3 --enable-shared --disable-w32threads --disable-autodetect --enable-cairo --enable-fontconfig --enable-iconv --enable-gnutls --enable-lcms2 --enable-libxml2 --enable-gmp --enable-bzlib --enable-lzma --enable-libsnappy --enable-zlib --enable-librist --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-sdl2 --enable-libaribb24 --enable-libaribcaption --enable-libdav1d --enable-libdavs2 --enable-libopenjpeg --enable-libquirc --enable-libuavs3d --enable-libxevd --enable-libzvbi --enable-liboapv --enable-libqrencode --enable-librav1e --enable-libsvtav1 --enable-libvvenc --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxeve --enable-libxvid --enable-libaom --enable-libjxl --enable-libsvtjpegxs --enable-libvpx --enable-mediafoundation --enable-libass --enable-frei0r --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-liblensfun --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-dxva2 --enable-d3d11va --enable-d3d12va --enable-ffnvcodec --enable-libvpl --enable-nvdec --enable-nvenc --enable-vaapi --enable-vulkan --enable-libplacebo --enable-opencl --enable-libcdio --enable-openal --enable-libgme --enable-libmodplug --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libshine --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libcodec2 --enable-libilbc --enable-libgsm --enable-liblc3 --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-ladspa --enable-libbs2b --enable-libflite --enable-libmysofa --enable-librubberband --enable-libsoxr --enable-chromaprint --enable-whisper
+  libavutil      61.  1.100 / 61.  1.100
+  libavcodec     63.  1.100 / 63.  1.100
+  libavformat    63.  1.100 / 63.  1.100
+  libavdevice    63.  1.100 / 63.  1.100
+  libavfilter    12.  1.100 / 12.  1.100
+  libswscale     10.  1.100 / 10.  1.100
+  libswresample   7.  1.100 /  7.  1.100
+[in#0/mp3 @ 000001abf9ab6bc0] Estimating duration from bitrate, this may be inaccurate
+Input #0, mp3, from 'dataset\real\real_002.mp3':
+  Duration: 00:00:01.97, start: 0.000000, bitrate: 256 kb/s
+  Stream #0:0: Audio: mp3 (mp3float), 48000 Hz, stereo, fltp, 256 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (mp3 (mp3float) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to 'processed_dataset\real\real_002_converted.wav':
+  Metadata:
+    ISFT            : Lavf63.1.100
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+    Metadata:
+      encoder         : Lavc63.1.100 pcm_s16le
+[out#0/wav @ 000001abf9b16cc0] video:0KiB audio:62KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.123857%
+size=      62KiB time=00:00:01.96 bitrate= 256.3kbits/s speed=85.2x elapsed=0:00:00.02    
+real: real_002.mp3 -> 1 clips
+Processing: real_003.mp3
+ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+  built with gcc 16.1.0 (Rev2, Built by MSYS2 project)
+  configuration: --enable-gpl --enable-version3 --enable-shared --disable-w32threads --disable-autodetect --enable-cairo --enable-fontconfig --enable-iconv --enable-gnutls --enable-lcms2 --enable-libxml2 --enable-gmp --enable-bzlib --enable-lzma --enable-libsnappy --enable-zlib --enable-librist --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-sdl2 --enable-libaribb24 --enable-libaribcaption --enable-libdav1d --enable-libdavs2 --enable-libopenjpeg --enable-libquirc --enable-libuavs3d --enable-libxevd --enable-libzvbi --enable-liboapv --enable-libqrencode --enable-librav1e --enable-libsvtav1 --enable-libvvenc --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxeve --enable-libxvid --enable-libaom --enable-libjxl --enable-libsvtjpegxs --enable-libvpx --enable-mediafoundation --enable-libass --enable-frei0r --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-liblensfun --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-dxva2 --enable-d3d11va --enable-d3d12va --enable-ffnvcodec --enable-libvpl --enable-nvdec --enable-nvenc --enable-vaapi --enable-vulkan --enable-libplacebo --enable-opencl --enable-libcdio --enable-openal --enable-libgme --enable-libmodplug --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libshine --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libcodec2 --enable-libilbc --enable-libgsm --enable-liblc3 --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-ladspa --enable-libbs2b --enable-libflite --enable-libmysofa --enable-librubberband --enable-libsoxr --enable-chromaprint --enable-whisper
+  libavutil      61.  1.100 / 61.  1.100
+  libavcodec     63.  1.100 / 63.  1.100
+  libavformat    63.  1.100 / 63.  1.100
+  libavdevice    63.  1.100 / 63.  1.100
+  libavfilter    12.  1.100 / 12.  1.100
+  libswscale     10.  1.100 / 10.  1.100
+  libswresample   7.  1.100 /  7.  1.100
+[in#0/mp3 @ 000002b2e186ae40] Estimating duration from bitrate, this may be inaccurate
+Input #0, mp3, from 'dataset\real\real_003.mp3':
+  Duration: 00:00:02.88, start: 0.000000, bitrate: 256 kb/s
+  Stream #0:0: Audio: mp3 (mp3float), 48000 Hz, stereo, fltp, 256 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (mp3 (mp3float) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to 'processed_dataset\real\real_003_converted.wav':
+  Metadata:
+    ISFT            : Lavf63.1.100
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+    Metadata:
+      encoder         : Lavc63.1.100 pcm_s16le
+[out#0/wav @ 000002b2e18c6e00] video:0KiB audio:90KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.084635%
+size=      90KiB time=00:00:02.88 bitrate= 256.2kbits/s speed= 194x elapsed=0:00:00.01    
+real: real_003.mp3 -> 1 clips
+Processing: real_004.mp3
+ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+  built with gcc 16.1.0 (Rev2, Built by MSYS2 project)
+  configuration: --enable-gpl --enable-version3 --enable-shared --disable-w32threads --disable-autodetect --enable-cairo --enable-fontconfig --enable-iconv --enable-gnutls --enable-lcms2 --enable-libxml2 --enable-gmp --enable-bzlib --enable-lzma --enable-libsnappy --enable-zlib --enable-librist --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-sdl2 --enable-libaribb24 --enable-libaribcaption --enable-libdav1d --enable-libdavs2 --enable-libopenjpeg --enable-libquirc --enable-libuavs3d --enable-libxevd --enable-libzvbi --enable-liboapv --enable-libqrencode --enable-librav1e --enable-libsvtav1 --enable-libvvenc --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxeve --enable-libxvid --enable-libaom --enable-libjxl --enable-libsvtjpegxs --enable-libvpx --enable-mediafoundation --enable-libass --enable-frei0r --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-liblensfun --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-dxva2 --enable-d3d11va --enable-d3d12va --enable-ffnvcodec --enable-libvpl --enable-nvdec --enable-nvenc --enable-vaapi --enable-vulkan --enable-libplacebo --enable-opencl --enable-libcdio --enable-openal --enable-libgme --enable-libmodplug --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libshine --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libcodec2 --enable-libilbc --enable-libgsm --enable-liblc3 --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-ladspa --enable-libbs2b --enable-libflite --enable-libmysofa --enable-librubberband --enable-libsoxr --enable-chromaprint --enable-whisper
+  libavutil      61.  1.100 / 61.  1.100
+  libavcodec     63.  1.100 / 63.  1.100
+  libavformat    63.  1.100 / 63.  1.100
+  libavdevice    63.  1.100 / 63.  1.100
+  libavfilter    12.  1.100 / 12.  1.100
+  libswscale     10.  1.100 / 10.  1.100
+  libswresample   7.  1.100 /  7.  1.100
+[in#0/mp3 @ 000001e9bb056b00] Estimating duration from bitrate, this may be inaccurate
+Input #0, mp3, from 'dataset\real\real_004.mp3':
+  Duration: 00:00:01.54, start: 0.000000, bitrate: 256 kb/s
+  Stream #0:0: Audio: mp3 (mp3float), 48000 Hz, stereo, fltp, 256 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (mp3 (mp3float) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to 'processed_dataset\real\real_004_converted.wav':
+  Metadata:
+    ISFT            : Lavf63.1.100
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+    Metadata:
+      encoder         : Lavc63.1.100 pcm_s16le
+[out#0/wav @ 000001e9bb0b54c0] video:0KiB audio:48KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.158691%
+size=      48KiB time=00:00:01.53 bitrate= 256.4kbits/s speed=23.9x elapsed=0:00:00.06    
+real: real_004.mp3 -> 1 clips
+Processing: real_005.ogg
+ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+  built with gcc 16.1.0 (Rev2, Built by MSYS2 project)
+  configuration: --enable-gpl --enable-version3 --enable-shared --disable-w32threads --disable-autodetect --enable-cairo --enable-fontconfig --enable-iconv --enable-gnutls --enable-lcms2 --enable-libxml2 --enable-gmp --enable-bzlib --enable-lzma --enable-libsnappy --enable-zlib --enable-librist --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-sdl2 --enable-libaribb24 --enable-libaribcaption --enable-libdav1d --enable-libdavs2 --enable-libopenjpeg --enable-libquirc --enable-libuavs3d --enable-libxevd --enable-libzvbi --enable-liboapv --enable-libqrencode --enable-librav1e --enable-libsvtav1 --enable-libvvenc --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxeve --enable-libxvid --enable-libaom --enable-libjxl --enable-libsvtjpegxs --enable-libvpx --enable-mediafoundation --enable-libass --enable-frei0r --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-liblensfun --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-dxva2 --enable-d3d11va --enable-d3d12va --enable-ffnvcodec --enable-libvpl --enable-nvdec --enable-nvenc --enable-vaapi --enable-vulkan --enable-libplacebo --enable-opencl --enable-libcdio --enable-openal --enable-libgme --enable-libmodplug --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libshine --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libcodec2 --enable-libilbc --enable-libgsm --enable-liblc3 --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-ladspa --enable-libbs2b --enable-libflite --enable-libmysofa --enable-librubberband --enable-libsoxr --enable-chromaprint --enable-whisper
+  libavutil      61.  1.100 / 61.  1.100
+  libavcodec     63.  1.100 / 63.  1.100
+  libavformat    63.  1.100 / 63.  1.100
+  libavdevice    63.  1.100 / 63.  1.100
+  libavfilter    12.  1.100 / 12.  1.100
+  libswscale     10.  1.100 / 10.  1.100
+  libswresample   7.  1.100 /  7.  1.100
+Input #0, ogg, from 'dataset\real\real_005.ogg':
+  Duration: 00:00:08.91, start: 0.006500, bitrate: 18 kb/s
+  Stream #0:0: Audio: opus, 48000 Hz, mono, fltp, start 0.006500
+Stream mapping:
+  Stream #0:0 -> #0:0 (opus (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to 'processed_dataset\real\real_005_converted.wav':
+  Metadata:
+    ISFT            : Lavf63.1.100
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+    Metadata:
+      encoder         : Lavc63.1.100 pcm_s16le
+[out#0/wav @ 00000246c4bf6e80] video:0KiB audio:278KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.027408%
+size=     278KiB time=00:00:08.89 bitrate= 256.1kbits/s speed= 263x elapsed=0:00:00.03    
+real: real_005.ogg -> 7 clips
+Processing: real_006.m4a
+ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+  built with gcc 16.1.0 (Rev2, Built by MSYS2 project)
+  configuration: --enable-gpl --enable-version3 --enable-shared --disable-w32threads --disable-autodetect --enable-cairo --enable-fontconfig --enable-iconv --enable-gnutls --enable-lcms2 --enable-libxml2 --enable-gmp --enable-bzlib --enable-lzma --enable-libsnappy --enable-zlib --enable-librist --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-sdl2 --enable-libaribb24 --enable-libaribcaption --enable-libdav1d --enable-libdavs2 --enable-libopenjpeg --enable-libquirc --enable-libuavs3d --enable-libxevd --enable-libzvbi --enable-liboapv --enable-libqrencode --enable-librav1e --enable-libsvtav1 --enable-libvvenc --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxeve --enable-libxvid --enable-libaom --enable-libjxl --enable-libsvtjpegxs --enable-libvpx --enable-mediafoundation --enable-libass --enable-frei0r --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-liblensfun --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-dxva2 --enable-d3d11va --enable-d3d12va --enable-ffnvcodec --enable-libvpl --enable-nvdec --enable-nvenc --enable-vaapi --enable-vulkan --enable-libplacebo --enable-opencl --enable-libcdio --enable-openal --enable-libgme --enable-libmodplug --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libshine --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libcodec2 --enable-libilbc --enable-libgsm --enable-liblc3 --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-ladspa --enable-libbs2b --enable-libflite --enable-libmysofa --enable-librubberband --enable-libsoxr --enable-chromaprint --enable-whisper
+  libavutil      61.  1.100 / 61.  1.100
+  libavcodec     63.  1.100 / 63.  1.100
+  libavformat    63.  1.100 / 63.  1.100
+  libavdevice    63.  1.100 / 63.  1.100
+  libavfilter    12.  1.100 / 12.  1.100
+  libswscale     10.  1.100 / 10.  1.100
+  libswresample   7.  1.100 /  7.  1.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'dataset\real\real_006.m4a':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: mp41isom
+    creation_time   : 2026-08-11T15:34:16.000000Z
+  Duration: 00:00:11.56, start: 0.000000, bitrate: 205 kb/s
+  Stream #0:0[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 191 kb/s (default)
+    Metadata:
+      creation_time   : 2026-08-11T15:34:16.000000Z
+      handler_name    : SoundHandler
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to 'processed_dataset\real\real_006_converted.wav':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: mp41isom
+    ISFT            : Lavf63.1.100
+  Stream #0:0(und): Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s (default)
+    Metadata:
+      encoder         : Lavc63.1.100 pcm_s16le
+      creation_time   : 2026-08-11T15:34:16.000000Z
+      handler_name    : SoundHandler
+[out#0/wav @ 000001e1cad3a300] video:0KiB audio:361KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.021120%
+size=     361KiB time=00:00:11.56 bitrate= 255.6kbits/s speed= 188x elapsed=0:00:00.06    
+real: real_006.m4a -> 10 clips
+
+================================
+DATASET PREPARATION COMPLETED
+================================
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-ChildItem .\processed_dataset\ai -File | Measure-Object
+
+
+Count    : 170
+Average  : 
+Sum      : 
+Maximum  : 
+Minimum  : 
+Property : 
+
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-ChildItem .\processed_dataset\real -File | Measure-Object
+
+
+Count    : 23
+Average  : 
+Sum      : 
+Maximum  : 
+Minimum  : 
+Property : 
+
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-ChildItem .\processed_dataset\ai -File | Select-Object -First 5 Name
+
+Name              
+----              
+ai_001.wav_000.wav
+ai_001.wav_001.wav
+ai_001.wav_002.wav
+ai_001.wav_003.wav
+ai_001.wav_004.wav
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-ChildItem .\processed_dataset\real -File | Select-Object -First 5 Name
+
+Name            
+----            
+real_001_000.wav
+real_001_001.wav
+real_001_002.wav
+real_002_000.wav
+real_003_000.wav
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python -c "import librosa; y,sr=librosa.load('processed_dataset/ai/ai_001.wav_000.wav', sr=16000); print('AI:', len(y), sr, len(y)/sr)"
+AI: 32000 16000 2.0
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python -c "import librosa; y,sr=librosa.load('processed_dataset/real/real_001_000.wav', sr=16000); print('REAL:', len(y), sr, len(y)/sr)"
+REAL: 32000 16000 2.0
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python -c "import librosa; y,sr=librosa.load('processed_dataset/ai/ai_001.wav_000.wav', sr=16000); print('AI:', len(y), sr, len(y)/sr)"
+AI: 32000 16000 2.0
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> pip install joblib scikit-learn
+Requirement already satisfied: joblib in c:\users\hp\desktop\college notes\git\ai-video-detector\ai-video-detector\venv\lib\site-packages (1.5.3)
+Requirement already satisfied: scikit-learn in c:\users\hp\desktop\college notes\git\ai-video-detector\ai-video-detector\venv\lib\site-packages (1.9.0)
+Requirement already satisfied: numpy>=1.24.1 in c:\users\hp\desktop\college notes\git\ai-video-detector\ai-video-detector\venv\lib\site-packages (from scikit-learn) (2.4.6)
+Requirement already satisfied: scipy>=1.10.0 in c:\users\hp\desktop\college notes\git\ai-video-detector\ai-video-detector\venv\lib\site-packages (from scikit-learn) (1.18.0)
+Requirement already satisfied: narwhals>=2.0.1 in c:\users\hp\desktop\college notes\git\ai-video-detector\ai-video-detector\venv\lib\site-packages (from scikit-learn) (2.24.0)
+Requirement already satisfied: threadpoolctl>=3.5.0 in c:\users\hp\desktop\college notes\git\ai-video-detector\ai-video-detector\venv\lib\site-packages (from scikit-learn) (3.6.0)
+
+[notice] A new release of pip is available: 24.3.1 -> 26.2.1
+[notice] To update, run: python.exe -m pip install --upgrade pip
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\train_model.py
+================================
+EXTRACTING AUDIO FEATURES
+================================
+AI files: 170
+Processed 25/170
+Processed 50/170
+Processed 75/170
+Processed 100/170
+Processed 125/170
+Processed 150/170
+REAL files: 23
+
+Feature shape: (193, 208)
+Labels: 193
+
+AI samples: 170
+REAL samples: 23
+
+Class weights: {np.int64(0): np.float64(4.277777777777778), np.int64(1): np.float64(0.5661764705882353)}
+
+================================
+TRAINING MODEL
+================================
+Balanced training samples: 272
+AI: 136
+REAL: 136
+
+================================
+MODEL RESULTS
+================================
+Accuracy: 100.00%
+
+              precision    recall  f1-score   support
+
+        Real       1.00      1.00      1.00         5
+AI Generated       1.00      1.00      1.00        34
+
+    accuracy                           1.00        39
+   macro avg       1.00      1.00      1.00        39
+weighted avg       1.00      1.00      1.00        39
+
+
+================================
+MODEL SAVED
+================================
+model/audio_detector.pkl
+model/audio_scaler.pkl
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\predict_audio.py ".\dataset\ai\ai_001.wav.mp3"
+
+================================
+AI VOICE DETECTOR
+================================
+Audio: .\dataset\ai\ai_001.wav.mp3
+Model loaded successfully.
+Features extracted: (208,)
+
+================================
+RESULT
+================================
+Prediction: AI Generated
+Confidence: 94.91%
+
+Real probability: 5.09%
+AI probability:   94.91%
+================================
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\predict_audio.py ".\dataset\real\real_001.wav"
+
+================================
+AI VOICE DETECTOR
+================================
+Audio: .\dataset\real\real_001.wav
+Model loaded successfully.
+Features extracted: (208,)
+
+================================
+RESULT
+================================
+Prediction: Real Human Voice
+Confidence: 99.75%
+
+Real probability: 99.75%
+AI probability:   0.25%
+================================
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\predict_audio.py ".\test_audio\new_ai.wav"
+ERROR: Audio file not found.
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\predict_audio.py ".\test_audio\new_real.wav"
+ERROR: Audio file not found.
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\predict_audio.py ".\test_audio\new_real.wav"^C
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> mkdir test_audio
+
+
+    Directory: C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector
+
+
+Mode                 LastWriteTime         Length Name                                                                                              
+----                 -------------         ------ ----                                                                                              
+d-----        11-08-2026     21:40                test_audio                                                                                        
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-ChildItem .\test_audio
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\predict_audio.py ".\test_audio\new_ai.wav"
+ERROR: Audio file not found.
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\predict_audio.py ".\test_audio\new_real.wav"
+ERROR: Audio file not found.
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-Location
+
+Path                                                                  
+----                                                                  
+C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-ChildItem
+
+
+    Directory: C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector
+
+
+Mode                 LastWriteTime         Length Name                                                                                              
+----                 -------------         ------ ----                                                                                              
+d-----        09-08-2026     11:19                audio_detector                                                                                    
+d-----        09-08-2026     11:48                dataset                                                                                           
+d-----        11-08-2026     21:36                model                                                                                             
+d-----        11-08-2026     21:29                processed_dataset                                                                                 
+d-----        09-08-2026     11:17                templates                                                                                         
+d-----        11-08-2026     21:40                test_audio                                                                                        
+d-----        09-08-2026     11:42                uploads                                                                                           
+d-----        09-08-2026     11:47                utils                                                                                             
+-a----        09-08-2026     11:14              0 app.py                                                                                            
+-a----        11-08-2026     21:23           3506 notepad prepare_dataset.py                                                                        
+-a----        11-08-2026     21:41           2904 predict_audio.py                                                                                  
+-a----        11-08-2026     21:28           3286 prepare_dataset.py                                                                                
+-a----        11-08-2026     21:08          63054 test002.wav                                                                                       
+-a----        09-08-2026     11:43            401 test_audio.py                                                                                     
+-a----        11-08-2026     20:58          63054 test_real.wav                                                                                     
+-a----        11-08-2026     20:58          92238 test_real3.wav                                                                                    
+-a----        11-08-2026     21:35           5268 train_model.py                                                                                    
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-ChildItem .\test_audio -Force
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> New-Item -ItemType Directory -Path .\test_audio -Force
+
+
+    Directory: C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector
+
+
+Mode                 LastWriteTime         Length Name                                                                                              
+----                 -------------         ------ ----                                                                                              
+d-----        11-08-2026     21:40                test_audio                                                                                        
+
+
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-ChildItem .\test_audio -File
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\predict_audio.py ".\test_audio\voice_ai.mp3"
+ERROR: Audio file not found.
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\predict_audio.py ".\test_audio\voice_ai.mp3"
+ERROR: Audio file not found.
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> Get-ChildItem .\test_audio -File
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\predict_audio.py ".\test_real.wav"
+
+================================
+AI VOICE DETECTOR
+================================
+Audio: .\test_real.wav
+Model loaded successfully.
+Features extracted: (208,)
+
+================================
+RESULT
+================================
+Prediction: AI Generated
+Confidence: 62.03%
+
+Real probability: 37.97%
+AI probability:   62.03%
+================================
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\predict_audio.py ".\test_real3.wav"
+
+================================
+AI VOICE DETECTOR
+================================
+Audio: .\test_real3.wav
+Model loaded successfully.
+Features extracted: (208,)
+
+================================
+RESULT
+================================
+Prediction: Real Human Voice
+Confidence: 91.51%
+
+Real probability: 91.51%
+AI probability:   8.49%
+================================
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\predict_audio.py ".\test002.wav"
+
+================================
+AI VOICE DETECTOR
+================================
+Audio: .\test002.wav
+Model loaded successfully.
+Features extracted: (208,)
+
+================================
+RESULT
+================================
+Prediction: AI Generated
+Confidence: 62.03%
+
+Real probability: 37.97%
+AI probability:   62.03%
+================================
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> pip install flask
+Requirement already satisfied: flask in c:\users\hp\desktop\college notes\git\ai-video-detector\ai-video-detector\venv\lib\site-packages (3.1.3)
+Requirement already satisfied: blinker>=1.9.0 in c:\users\hp\desktop\college notes\git\ai-video-detector\ai-video-detector\venv\lib\site-packages (from flask) (1.9.0)
+Requirement already satisfied: click>=8.1.3 in c:\users\hp\desktop\college notes\git\ai-video-detector\ai-video-detector\venv\lib\site-packages (from flask) (8.4.2)
+Requirement already satisfied: itsdangerous>=2.2.0 in c:\users\hp\desktop\college notes\git\ai-video-detector\ai-video-detector\venv\lib\site-packages (from flask) (2.2.0)
+Requirement already satisfied: jinja2>=3.1.2 in c:\users\hp\desktop\college notes\git\ai-video-detector\ai-video-detector\venv\lib\site-packages (from flask) (3.1.6)
+Requirement already satisfied: markupsafe>=2.1.1 in c:\users\hp\desktop\college notes\git\ai-video-detector\ai-video-detector\venv\lib\site-packages (from flask) (3.0.3)
+Requirement already satisfied: werkzeug>=3.1.0 in c:\users\hp\desktop\college notes\git\ai-video-detector\ai-video-detector\venv\lib\site-packages (from flask) (3.1.8)
+Requirement already satisfied: colorama in c:\users\hp\desktop\college notes\git\ai-video-detector\ai-video-detector\venv\lib\site-packages (from click>=8.1.3->flask) (0.4.6)
+
+[notice] A new release of pip is available: 24.3.1 -> 26.2.1
+[notice] To update, run: python.exe -m pip install --upgrade pip
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\app.py
+ * Serving Flask app 'app'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 875-651-877
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> python .\app.py
+ * Serving Flask app 'app'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 875-651-877
+127.0.0.1 - - [11/Aug/2026 21:46:04] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 21:46:19] "POST / HTTP/1.1" 200 -
+C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector\app.py:28: UserWarning: PySoundFile failed. Trying audioread instead.
+  y, sr = librosa.load(
+C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\AI-Video-Detector\venv\Lib\site-packages\librosa\core\audio.py:184: FutureWarning: librosa.core.audio.__audioread_load
+        Deprecated as of librosa version 0.10.0.
+        It will be removed in librosa version 1.0.
+  y, sr_native = __audioread_load(path, offset, duration, dtype)
+127.0.0.1 - - [11/Aug/2026 21:48:43] "POST / HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 21:51:19] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 21:51:20] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [11/Aug/2026 21:51:29] "POST / HTTP/1.1" 200 -
+(venv) PS C:\Users\HP\Desktop\COLLEGE NOTES\Git\AI-Video-Detector\audio_detector> a

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Video Detector</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f172a,
+                    #1e293b,
+                    #312e81
+                );
+
+            min-height: 100vh;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #cbd5e1;
+            font-size: 17px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 22px;
+            padding: 30px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            margin-bottom: 25px;
+        }
+
+        .upload-area {
+            border: 2px dashed #64748b;
+            border-radius: 18px;
+            padding: 45px 20px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .upload-area:hover {
+            border-color: #818cf8;
+            background: rgba(129, 140, 248, 0.08);
+        }
+
+        .upload-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .upload-area h2 {
+            margin-bottom: 10px;
+        }
+
+        .upload-area p {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-label {
+            display: inline-block;
+            background: #6366f1;
+            padding: 13px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .file-label:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        #file-name {
+            margin-top: 15px;
+            color: #a5b4fc;
+        }
+
+        .detect-button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(
+                90deg,
+                #6366f1,
+                #8b5cf6
+            );
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .detect-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .video-section {
+            margin-top: 30px;
+        }
+
+        .video-section h2 {
+            margin-bottom: 15px;
+        }
+
+        .video-container {
+            width: 100%;
+            background: #020617;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid #334155;
+        }
+
+        video {
+            display: block;
+            width: 100%;
+            max-height: 550px;
+            object-fit: contain;
+            background: black;
+        }
+
+        .result {
+            margin-top: 25px;
+            text-align: center;
+            padding: 25px;
+            border-radius: 18px;
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .result h2 {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .confidence-text {
+            font-size: 18px;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+        }
+
+        .progress {
+            height: 15px;
+            background: #334155;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: {{ confidence|default(0) }}%;
+            background: linear-gradient(
+                90deg,
+                #22c55e,
+                #06b6d4
+            );
+            border-radius: 20px;
+            transition: width 1s ease;
+        }
+
+        .error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #fecaca;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            color: #c7d2fe;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px solid #475569;
+            border-top: 3px solid #818cf8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .footer {
+            text-align: center;
+            color: #94a3b8;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+
+            .header h1 {
+                font-size: 30px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .upload-area {
+                padding: 30px 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>🎬 AI Video Detector</h1>
+
+        <p>
+            Upload a video and analyze whether it is
+            AI-generated or real.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <form
+            action="/predict"
+            method="POST"
+            enctype="multipart/form-data"
+            onsubmit="showLoading()"
+        >
+
+            <div class="upload-area">
+
+                <div class="upload-icon">
+                    🎥
+                </div>
+
+                <h2>
+                    Upload Your Video
+                </h2>
+
+                <p>
+                    Select an MP4, AVI, MOV or other video file
+                </p>
+
+                <label
+                    for="video"
+                    class="file-label"
+                >
+                    Choose Video
+                </label>
+
+                <input
+                    type="file"
+                    id="video"
+                    name="video"
+                    accept="video/*"
+                    required
+                    onchange="showFileName(this)"
+                >
+
+                <div id="file-name">
+                    No file selected
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="detect-button"
+            >
+                🔍 Detect Video
+            </button>
+
+
+            <div
+                id="loading"
+                class="loading"
+            >
+
+                <span class="spinner"></span>
+
+                Analyzing video... Please wait.
+
+            </div>
+
+        </form>
+
+
+        {% if error %}
+
+        <div class="error">
+
+            ❌ {{ error }}
+
+        </div>
+
+        {% endif %}
+
+
+        {% if video_file %}
+
+        <div class="video-section">
+
+            <h2>
+                🎥 Uploaded Video
+            </h2>
+
+            <div class="video-container">
+
+                <video
+                    controls
+                    preload="metadata"
+                >
+
+                    <source
+                        src="{{ url_for(
+                            'static',
+                            filename='uploads/' + video_file
+                        ) }}"
+                    >
+
+                    Your browser does not support
+                    the video tag.
+
+                </video>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        {% if prediction %}
+
+        <div class="result">
+
+            <h2>
+                {% if prediction == "AI Generated" %}
+                    🤖 AI Generated Video
+                {% else %}
+                    ✅ Real Video
+                {% endif %}
+            </h2>
+
+            <div class="confidence-text">
+
+                Confidence:
+                <strong>{{ confidence }}%</strong>
+
+            </div>
+
+            <div class="progress">
+
+                <div class="progress-bar"></div>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="footer">
+
+        AI Video Detection System
+
+    </div>
+
+</div>
+
+
+<script>
+
+function showFileName(input) {
+
+    const fileName =
+        document.getElementById("file-name");
+
+    if (input.files.length > 0) {
+
+        fileName.innerText =
+            "Selected: " + input.files[0].name;
+
+    } else {
+
+        fileName.innerText =
+            "No file selected";
+
+    }
+}
+
+
+function showLoading() {
+
+    document.getElementById("loading").style.display =
+        "block";
+
+}
+
+</script>
+
+</body>
+
+</html>
