@@ -1,3 +1,4 @@
+```python
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -28,9 +29,6 @@ app.config["SESSION_COOKIE_SECURE"] = False
 # =========================================================
 # CORS
 # =========================================================
-
-# Support both localhost and 127.0.0.1
-# and common Next.js ports.
 
 CORS(
     app,
@@ -78,7 +76,7 @@ def init_db():
     conn = get_db()
 
     # =====================================================
-    # USERS
+    # USERS TABLE
     # =====================================================
 
     conn.execute(
@@ -94,7 +92,7 @@ def init_db():
     )
 
     # =====================================================
-    # DETECTION HISTORY
+    # DETECTION HISTORY TABLE
     # =====================================================
 
     conn.execute(
@@ -117,7 +115,12 @@ def init_db():
 
     conn.close()
 
+    print("==============================================")
+    print("DATABASE INITIALIZED")
     print("Database:", DB_PATH)
+    print("Users table: READY")
+    print("History table: READY")
+    print("==============================================")
 
 
 # =========================================================
@@ -289,6 +292,7 @@ def authenticate_user(email, password):
 
 
     if not email or not password:
+
         return None
 
 
@@ -309,6 +313,7 @@ def authenticate_user(email, password):
 
 
     if user is None:
+
         return None
 
 
@@ -330,6 +335,7 @@ def authenticate_user(email, password):
 
 
     if not valid:
+
         return None
 
 
@@ -489,12 +495,6 @@ def logout():
 
 # =========================================================
 # SAVE DETECTION HISTORY
-#
-# IMPORTANT:
-# This endpoint DOES NOT run a model.
-#
-# It only stores the result that was already generated
-# by the existing image/video/audio detector.
 # =========================================================
 
 @app.route("/api/history", methods=["POST"])
@@ -563,8 +563,6 @@ def save_history():
 
     # -----------------------------------------------------
     # CONVERT VALUES
-    #
-    # No prediction calculation happens here.
     # -----------------------------------------------------
 
     try:
@@ -593,7 +591,7 @@ def save_history():
 
 
     # -----------------------------------------------------
-    # SAVE
+    # SAVE HISTORY
     # -----------------------------------------------------
 
     conn = get_db()
@@ -712,27 +710,6 @@ def get_history():
 # =========================================================
 # DASHBOARD STATISTICS
 # =========================================================
-#
-# This endpoint reads the user's saved detection history.
-#
-# IMPORTANT:
-# Predictions may be:
-#
-#   Real
-#   Real Content
-#   Real Image
-#   Real Video
-#   Real Audio
-#   AI
-#   AI Generated
-#   AI Content
-#   AI Image
-#   AI Video
-#   AI Audio
-#
-# Therefore we use LIKE instead of checking only a few
-# exact prediction names.
-# =========================================================
 
 @app.route("/api/stats", methods=["GET"])
 def get_stats():
@@ -767,15 +744,6 @@ def get_stats():
 
     # -----------------------------------------------------
     # REAL CONTENT
-    #
-    # Examples counted:
-    #
-    # Real
-    # Real Content
-    # Real Image
-    # Real Video
-    # Real Audio
-    # Real Media
     # -----------------------------------------------------
 
     real_row = conn.execute(
@@ -791,17 +759,6 @@ def get_stats():
 
     # -----------------------------------------------------
     # AI CONTENT
-    #
-    # Examples counted:
-    #
-    # AI
-    # AI Generated
-    # AI-Generated
-    # AI Content
-    # AI Image
-    # AI Video
-    # AI Audio
-    # Artificial Intelligence
     # -----------------------------------------------------
 
     ai_row = conn.execute(
@@ -1015,13 +972,29 @@ def delete_history(history_id):
 
 
 # =========================================================
-# START SERVER
+# IMPORTANT FOR GUNICORN / RENDER
+# =========================================================
+#
+# Gunicorn imports this file using:
+#
+#     gunicorn --bind 0.0.0.0:$PORT app:app
+#
+# Therefore init_db() MUST run when this module is imported.
+#
+# DO NOT put init_db() only inside:
+#
+#     if __name__ == "__main__":
+#
+# =========================================================
+
+init_db()
+
+
+# =========================================================
+# START SERVER - LOCAL DEVELOPMENT ONLY
 # =========================================================
 
 if __name__ == "__main__":
-
-    init_db()
-
 
     print()
     print("==============================================")
@@ -1070,3 +1043,4 @@ if __name__ == "__main__":
         port=5003,
         debug=False
     )
+```
