@@ -1,4 +1,4 @@
-```python
+
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -8,27 +8,22 @@ import os
 from datetime import datetime
 
 
-# =========================================================
+# ============================================================
 # FLASK APP
-# =========================================================
+# ============================================================
 
 app = Flask(__name__)
 
 app.secret_key = "ai-deepfake-detector-secret-key-2026"
-
-
-# =========================================================
-# SESSION CONFIGURATION
-# =========================================================
 
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["SESSION_COOKIE_SECURE"] = False
 
 
-# =========================================================
+# ============================================================
 # CORS
-# =========================================================
+# ============================================================
 
 CORS(
     app,
@@ -44,22 +39,16 @@ CORS(
 )
 
 
-# =========================================================
+# ============================================================
 # DATABASE
-# =========================================================
+# ============================================================
 
-BASE_DIR = os.path.dirname(
-    os.path.abspath(__file__)
-)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-DB_PATH = os.path.join(
-    BASE_DIR,
-    "auth.db"
-)
+DB_PATH = os.path.join(BASE_DIR, "auth.db")
 
 
 def get_db():
-
     conn = sqlite3.connect(DB_PATH)
 
     conn.row_factory = sqlite3.Row
@@ -67,65 +56,79 @@ def get_db():
     return conn
 
 
-# =========================================================
-# INITIALIZE DATABASE
-# =========================================================
-
 def init_db():
 
     conn = get_db()
 
-    # =====================================================
+    # --------------------------------------------------------
     # USERS TABLE
-    # =====================================================
+    # --------------------------------------------------------
 
     conn.execute(
-        """
+        
         CREATE TABLE IF NOT EXISTS users (
+
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+
             username TEXT NOT NULL,
+
             email TEXT UNIQUE NOT NULL,
+
             password TEXT NOT NULL,
+
             created_at TEXT NOT NULL
+
         )
-        """
+    
     )
 
-    # =====================================================
-    # DETECTION HISTORY TABLE
-    # =====================================================
+    # --------------------------------------------------------
+    # HISTORY TABLE
+    # --------------------------------------------------------
 
     conn.execute(
-        """
+        
         CREATE TABLE IF NOT EXISTS history (
+
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+
             user_id INTEGER NOT NULL,
+
             filename TEXT,
+
             detection_type TEXT,
+
             prediction TEXT,
+
             confidence REAL,
+
             real_probability REAL,
+
             ai_probability REAL,
+
             created_at TEXT NOT NULL
+
         )
-        """
+        
     )
 
     conn.commit()
 
     conn.close()
 
+    print()
     print("==============================================")
     print("DATABASE INITIALIZED")
     print("Database:", DB_PATH)
     print("Users table: READY")
     print("History table: READY")
     print("==============================================")
+    print()
 
 
-# =========================================================
-# HEALTH
-# =========================================================
+# ============================================================
+# HEALTH CHECK
+# ============================================================
 
 @app.route("/api/health", methods=["GET"])
 def health():
@@ -136,16 +139,14 @@ def health():
     })
 
 
-# =========================================================
+# ============================================================
 # SIGNUP
-# =========================================================
+# ============================================================
 
 @app.route("/api/signup", methods=["POST"])
 def signup():
 
-    data = request.get_json(
-        silent=True
-    ) or {}
+    data = request.get_json(silent=True) or {}
 
     username = str(
         data.get("username", "")
@@ -159,10 +160,9 @@ def signup():
         data.get("password", "")
     )
 
-
-    # -----------------------------------------------------
+    # --------------------------------------------------------
     # VALIDATION
-    # -----------------------------------------------------
+    # --------------------------------------------------------
 
     if not username:
 
@@ -171,14 +171,12 @@ def signup():
             "message": "Username is required"
         }), 400
 
-
     if not email:
 
         return jsonify({
             "success": False,
             "message": "Email is required"
         }), 400
-
 
     if not password:
 
@@ -187,7 +185,6 @@ def signup():
             "message": "Password is required"
         }), 400
 
-
     if len(password) < 6:
 
         return jsonify({
@@ -195,13 +192,11 @@ def signup():
             "message": "Password must be at least 6 characters"
         }), 400
 
+    # --------------------------------------------------------
+    # CHECK EXISTING USER
+    # --------------------------------------------------------
 
     conn = get_db()
-
-
-    # -----------------------------------------------------
-    # CHECK EXISTING USER
-    # -----------------------------------------------------
 
     existing = conn.execute(
         """
@@ -212,7 +207,6 @@ def signup():
         (email,)
     ).fetchone()
 
-
     if existing:
 
         conn.close()
@@ -222,22 +216,18 @@ def signup():
             "message": "Email already registered"
         }), 409
 
+    # --------------------------------------------------------
+    # HASH PASSWORD
+    # --------------------------------------------------------
 
-    # -----------------------------------------------------
-    # PASSWORD HASH
-    # -----------------------------------------------------
+    hashed_password = generate_password_hash(password)
 
-    hashed_password = generate_password_hash(
-        password
-    )
-
-
-    # -----------------------------------------------------
-    # CREATE USER
-    # -----------------------------------------------------
+    # --------------------------------------------------------
+    # INSERT USER
+    # --------------------------------------------------------
 
     conn.execute(
-        """
+        
         INSERT INTO users
         (
             username,
@@ -246,7 +236,7 @@ def signup():
             created_at
         )
         VALUES (?, ?, ?, ?)
-        """,
+        ,
         (
             username,
             email,
@@ -255,11 +245,9 @@ def signup():
         )
     )
 
-
     conn.commit()
 
     conn.close()
-
 
     print()
     print("================================")
@@ -269,16 +257,15 @@ def signup():
     print("================================")
     print()
 
-
     return jsonify({
         "success": True,
         "message": "Account created successfully"
     }), 201
 
 
-# =========================================================
+# ============================================================
 # AUTHENTICATE USER
-# =========================================================
+# ============================================================
 
 def authenticate_user(email, password):
 
@@ -290,17 +277,14 @@ def authenticate_user(email, password):
         password or ""
     )
 
-
     if not email or not password:
 
         return None
 
-
     conn = get_db()
 
-
     user = conn.execute(
-        """
+        
         SELECT *
         FROM users
         WHERE LOWER(email) = ?
@@ -308,14 +292,11 @@ def authenticate_user(email, password):
         (email,)
     ).fetchone()
 
-
     conn.close()
-
 
     if user is None:
 
         return None
-
 
     try:
 
@@ -333,26 +314,21 @@ def authenticate_user(email, password):
 
         return None
 
-
     if not valid:
 
         return None
 
-
     return user
 
 
-# =========================================================
+# ============================================================
 # LOGIN
-# =========================================================
+# ============================================================
 
 @app.route("/api/login", methods=["POST"])
 def api_login():
 
-    data = request.get_json(
-        silent=True
-    ) or {}
-
+    data = request.get_json(silent=True) or {}
 
     email = str(
         data.get("email", "")
@@ -362,19 +338,16 @@ def api_login():
         data.get("password", "")
     )
 
-
     print()
     print("================================")
     print("API LOGIN")
     print("Email:", repr(email))
     print("================================")
 
-
     user = authenticate_user(
         email,
         password
     )
-
 
     if user is None:
 
@@ -385,15 +358,13 @@ def api_login():
             "message": "Invalid email or password"
         }), 401
 
-
-    # -----------------------------------------------------
+    # --------------------------------------------------------
     # CREATE SESSION
-    # -----------------------------------------------------
+    # --------------------------------------------------------
 
     session.clear()
 
     session["user_id"] = user["id"]
-
 
     print("LOGIN SUCCESS")
     print("User ID:", user["id"])
@@ -403,37 +374,33 @@ def api_login():
         session.get("user_id")
     )
 
-
     return jsonify({
         "success": True,
         "message": "Login successful",
+
         "user": {
             "id": user["id"],
             "username": user["username"],
             "email": user["email"]
         }
+
     }), 200
 
 
-# =========================================================
+# ============================================================
 # CURRENT USER
-# =========================================================
+# ============================================================
 
 @app.route("/api/me", methods=["GET"])
 def me():
 
     user_id = session.get("user_id")
 
-
     print()
     print("================================")
     print("CHECK CURRENT USER")
-    print(
-        "Session user_id:",
-        user_id
-    )
+    print("Session user_id:", user_id)
     print("================================")
-
 
     if not user_id:
 
@@ -442,9 +409,7 @@ def me():
             "message": "Not logged in"
         }), 401
 
-
     conn = get_db()
-
 
     user = conn.execute(
         """
@@ -454,13 +419,11 @@ def me():
             email
         FROM users
         WHERE id = ?
-        """,
+        ,
         (user_id,)
     ).fetchone()
 
-
     conn.close()
-
 
     if user is None:
 
@@ -471,16 +434,15 @@ def me():
             "message": "User not found"
         }), 401
 
-
     return jsonify({
         "success": True,
         "user": dict(user)
     }), 200
 
 
-# =========================================================
+# ============================================================
 # LOGOUT
-# =========================================================
+# ============================================================
 
 @app.route("/api/logout", methods=["POST"])
 def logout():
@@ -493,15 +455,14 @@ def logout():
     })
 
 
-# =========================================================
+# ============================================================
 # SAVE DETECTION HISTORY
-# =========================================================
+# ============================================================
 
 @app.route("/api/history", methods=["POST"])
 def save_history():
 
     user_id = session.get("user_id")
-
 
     if not user_id:
 
@@ -510,11 +471,9 @@ def save_history():
             "message": "Not logged in"
         }), 401
 
-
     data = request.get_json(
         silent=True
     ) or {}
-
 
     filename = data.get(
         "filename"
@@ -540,10 +499,9 @@ def save_history():
         "ai_probability"
     )
 
-
-    # -----------------------------------------------------
-    # REQUIRED VALUES
-    # -----------------------------------------------------
+    # --------------------------------------------------------
+    # VALIDATION
+    # --------------------------------------------------------
 
     if not detection_type:
 
@@ -552,18 +510,12 @@ def save_history():
             "message": "Detection type is required"
         }), 400
 
-
     if not prediction:
 
         return jsonify({
             "success": False,
             "message": "Prediction is required"
         }), 400
-
-
-    # -----------------------------------------------------
-    # CONVERT VALUES
-    # -----------------------------------------------------
 
     try:
 
@@ -589,16 +541,14 @@ def save_history():
             "message": "Invalid detection values"
         }), 400
 
-
-    # -----------------------------------------------------
-    # SAVE HISTORY
-    # -----------------------------------------------------
+    # --------------------------------------------------------
+    # INSERT HISTORY
+    # --------------------------------------------------------
 
     conn = get_db()
 
-
     cursor = conn.execute(
-        """
+        
         INSERT INTO history
         (
             user_id,
@@ -611,7 +561,7 @@ def save_history():
             created_at
         )
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """,
+        ,
         (
             user_id,
             filename,
@@ -624,13 +574,11 @@ def save_history():
         )
     )
 
-
     conn.commit()
 
     history_id = cursor.lastrowid
 
     conn.close()
-
 
     print()
     print("================================")
@@ -646,7 +594,6 @@ def save_history():
     print("================================")
     print()
 
-
     return jsonify({
         "success": True,
         "message": "Detection history saved",
@@ -654,15 +601,14 @@ def save_history():
     }), 201
 
 
-# =========================================================
+# ============================================================
 # GET DETECTION HISTORY
-# =========================================================
+# ============================================================
 
 @app.route("/api/history", methods=["GET"])
 def get_history():
 
     user_id = session.get("user_id")
-
 
     if not user_id:
 
@@ -671,12 +617,10 @@ def get_history():
             "message": "Not logged in"
         }), 401
 
-
     conn = get_db()
 
-
     rows = conn.execute(
-        """
+        
         SELECT
             id,
             user_id,
@@ -690,13 +634,11 @@ def get_history():
         FROM history
         WHERE user_id = ?
         ORDER BY id DESC
-        """,
+        ,
         (user_id,)
     ).fetchall()
 
-
     conn.close()
-
 
     return jsonify({
         "success": True,
@@ -707,15 +649,14 @@ def get_history():
     }), 200
 
 
-# =========================================================
-# DASHBOARD STATISTICS
-# =========================================================
+# ============================================================
+# STATISTICS
+# ============================================================
 
 @app.route("/api/stats", methods=["GET"])
 def get_stats():
 
     user_id = session.get("user_id")
-
 
     if not user_id:
 
@@ -724,13 +665,11 @@ def get_stats():
             "message": "Not logged in"
         }), 401
 
-
     conn = get_db()
 
-
-    # -----------------------------------------------------
+    # --------------------------------------------------------
     # TOTAL ANALYSES
-    # -----------------------------------------------------
+    # --------------------------------------------------------
 
     total_row = conn.execute(
         """
@@ -741,88 +680,97 @@ def get_stats():
         (user_id,)
     ).fetchone()
 
-
-    # -----------------------------------------------------
+    # --------------------------------------------------------
     # REAL CONTENT
-    # -----------------------------------------------------
+    # --------------------------------------------------------
 
     real_row = conn.execute(
-        """
+        
         SELECT COUNT(*) AS total
         FROM history
         WHERE user_id = ?
-        AND LOWER(TRIM(prediction)) LIKE 'real%'
-        """,
+        AND LOWER(TRIM(prediction))
+        LIKE 'real%'
+        ,
         (user_id,)
     ).fetchone()
 
-
-    # -----------------------------------------------------
+    # --------------------------------------------------------
     # AI CONTENT
-    # -----------------------------------------------------
+    # --------------------------------------------------------
 
     ai_row = conn.execute(
         """
         SELECT COUNT(*) AS total
         FROM history
         WHERE user_id = ?
-        AND (
-            LOWER(TRIM(prediction)) LIKE 'ai%'
-            OR LOWER(TRIM(prediction)) LIKE 'artificial%'
+        AND
+        (
+            LOWER(TRIM(prediction))
+            LIKE 'ai%'
+
+            OR
+
+            LOWER(TRIM(prediction))
+            LIKE 'artificial%'
         )
         """,
         (user_id,)
     ).fetchone()
 
-
-    # -----------------------------------------------------
+    # --------------------------------------------------------
     # AVERAGE CONFIDENCE
-    # -----------------------------------------------------
+    # --------------------------------------------------------
 
     confidence_row = conn.execute(
         """
-        SELECT AVG(confidence) AS average_confidence
+        SELECT AVG(confidence)
+        AS average_confidence
+
         FROM history
+
         WHERE user_id = ?
         """,
         (user_id,)
     ).fetchone()
 
-
-    # -----------------------------------------------------
+    # --------------------------------------------------------
     # AVERAGE REAL PROBABILITY
-    # -----------------------------------------------------
+    # --------------------------------------------------------
 
     real_probability_row = conn.execute(
         """
-        SELECT AVG(real_probability) AS average_real_probability
+        SELECT AVG(real_probability)
+        AS average_real_probability
+
         FROM history
+
         WHERE user_id = ?
         """,
         (user_id,)
     ).fetchone()
 
-
-    # -----------------------------------------------------
+    # --------------------------------------------------------
     # AVERAGE AI PROBABILITY
-    # -----------------------------------------------------
+    # --------------------------------------------------------
 
     ai_probability_row = conn.execute(
         """
-        SELECT AVG(ai_probability) AS average_ai_probability
+        SELECT AVG(ai_probability)
+        AS average_ai_probability
+
         FROM history
+
         WHERE user_id = ?
         """,
         (user_id,)
     ).fetchone()
 
-
     conn.close()
 
-
-    # -----------------------------------------------------
-    # SAFE VALUES
-    # -----------------------------------------------------
+    # --------------------------------------------------------
+    # VALUES
+    # --------------------------------------------------------
 
     total_analyses = (
         total_row["total"]
@@ -830,13 +778,11 @@ def get_stats():
         else 0
     )
 
-
     real_content = (
         real_row["total"]
         if real_row
         else 0
     )
-
 
     ai_content = (
         ai_row["total"]
@@ -844,78 +790,102 @@ def get_stats():
         else 0
     )
 
-
     average_confidence = (
         confidence_row["average_confidence"]
+
         if (
             confidence_row
-            and confidence_row["average_confidence"] is not None
+            and
+            confidence_row[
+                "average_confidence"
+            ] is not None
         )
+
         else 0
     )
-
 
     average_real_probability = (
-        real_probability_row["average_real_probability"]
+        real_probability_row[
+            "average_real_probability"
+        ]
+
         if (
             real_probability_row
-            and real_probability_row["average_real_probability"] is not None
+            and
+            real_probability_row[
+                "average_real_probability"
+            ] is not None
         )
+
         else 0
     )
-
 
     average_ai_probability = (
-        ai_probability_row["average_ai_probability"]
+        ai_probability_row[
+            "average_ai_probability"
+        ]
+
         if (
             ai_probability_row
-            and ai_probability_row["average_ai_probability"] is not None
+            and
+            ai_probability_row[
+                "average_ai_probability"
+            ] is not None
         )
+
         else 0
     )
 
-
-    # -----------------------------------------------------
-    # RETURN DASHBOARD DATA
-    # -----------------------------------------------------
+    # --------------------------------------------------------
+    # RESPONSE
+    # --------------------------------------------------------
 
     return jsonify({
+
         "success": True,
+
         "stats": {
 
-            "totalAnalyses": int(
-                total_analyses
-            ),
+            "totalAnalyses":
+                int(total_analyses),
 
-            "realContent": int(
-                real_content
-            ),
+            "realContent":
+                int(real_content),
 
-            "aiContent": int(
-                ai_content
-            ),
+            "aiContent":
+                int(ai_content),
 
-            "averageConfidence": round(
-                float(average_confidence),
-                2
-            ),
+            "averageConfidence":
+                round(
+                    float(
+                        average_confidence
+                    ),
+                    2
+                ),
 
-            "averageRealProbability": round(
-                float(average_real_probability),
-                2
-            ),
+            "averageRealProbability":
+                round(
+                    float(
+                        average_real_probability
+                    ),
+                    2
+                ),
 
-            "averageAiProbability": round(
-                float(average_ai_probability),
-                2
-            )
+            "averageAiProbability":
+                round(
+                    float(
+                        average_ai_probability
+                    ),
+                    2
+                )
         }
+
     }), 200
 
 
-# =========================================================
+# ============================================================
 # DELETE HISTORY
-# =========================================================
+# ============================================================
 
 @app.route(
     "/api/history/<int:history_id>",
@@ -925,7 +895,6 @@ def delete_history(history_id):
 
     user_id = session.get("user_id")
 
-
     if not user_id:
 
         return jsonify({
@@ -933,14 +902,14 @@ def delete_history(history_id):
             "message": "Not logged in"
         }), 401
 
-
     conn = get_db()
-
 
     cursor = conn.execute(
         """
         DELETE FROM history
+
         WHERE id = ?
+
         AND user_id = ?
         """,
         (
@@ -949,13 +918,11 @@ def delete_history(history_id):
         )
     )
 
-
     conn.commit()
 
     deleted = cursor.rowcount
 
     conn.close()
-
 
     if deleted == 0:
 
@@ -964,35 +931,32 @@ def delete_history(history_id):
             "message": "History record not found"
         }), 404
 
-
     return jsonify({
         "success": True,
         "message": "History deleted"
     })
 
 
-# =========================================================
-# IMPORTANT FOR GUNICORN / RENDER
-# =========================================================
+# ============================================================
+# IMPORTANT DATABASE INITIALIZATION
+# ============================================================
 #
-# Gunicorn imports this file using:
+# DO NOT PUT init_db() INSIDE __main__.
 #
-#     gunicorn --bind 0.0.0.0:$PORT app:app
+# Render uses Gunicorn:
 #
-# Therefore init_db() MUST run when this module is imported.
+# gunicorn --bind 0.0.0.0:$PORT app:app
 #
-# DO NOT put init_db() only inside:
-#
-#     if __name__ == "__main__":
-#
-# =========================================================
+# Gunicorn imports this file, therefore the database
+# must be initialized when this file is imported.
+# ============================================================
 
 init_db()
 
 
-# =========================================================
-# START SERVER - LOCAL DEVELOPMENT ONLY
-# =========================================================
+# ============================================================
+# LOCAL DEVELOPMENT
+# ============================================================
 
 if __name__ == "__main__":
 
@@ -1011,15 +975,15 @@ if __name__ == "__main__":
     print()
 
     print("Signup:")
-    print("http://localhost:5003/api/signup")
+    print("POST http://localhost:5003/api/signup")
     print()
 
     print("Login:")
-    print("http://localhost:5003/api/login")
+    print("POST http://localhost:5003/api/login")
     print()
 
     print("Current User:")
-    print("http://localhost:5003/api/me")
+    print("GET http://localhost:5003/api/me")
     print()
 
     print("Save History:")
@@ -1034,13 +998,15 @@ if __name__ == "__main__":
     print("GET http://localhost:5003/api/stats")
     print()
 
-    print("==============================================")
+    print("Delete History:")
+    print("DELETE http://localhost:5003/api/history/<history_id>")
     print()
 
+    print("==============================================")
+    print()
 
     app.run(
         host="0.0.0.0",
         port=5003,
         debug=False
     )
-```
