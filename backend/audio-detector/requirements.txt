@@ -1,0 +1,9 @@
+Flask
+Flask-Cors
+gunicorn
+numpy
+librosa
+scikit-learn
+joblib
+soundfile
+scipy
