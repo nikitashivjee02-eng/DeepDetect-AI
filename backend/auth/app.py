@@ -94,8 +94,8 @@ app.config["SESSION_COOKIE_SAMESITE"] = "None"
 
 
 
-app.config["SESSION_COOKIE_SECURE"] = False
 
+app.config["SESSION_COOKIE_SECURE"] = True
 
 
 
