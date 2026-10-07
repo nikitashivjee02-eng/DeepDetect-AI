@@ -1,0 +1,7 @@
+Flask
+Flask-Cors
+torch
+transformers
+Pillow
+numpy
+gunicorn
