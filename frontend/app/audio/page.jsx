@@ -67,16 +67,18 @@ export default function AudioDetectionPage() {
     setResult(null);
 
     try {
-      // Audio detection
+      // =====================================================
+      // AUDIO DETECTION
+      // DO NOT CHANGE DETECTION SERVER
+      // =====================================================
+
       const formData = new FormData();
       formData.append("file", file, file.name);
 
       let response;
 
       try {
-        response = await fetch(
-          "http://127.0.0.1:5001/api/audio",
-          {
+        response = await fetch("https://deepanalysis-audio.onrender.com/api/audio", {
             method: "POST",
             body: formData,
             mode: "cors",
@@ -139,14 +141,13 @@ export default function AudioDetectionPage() {
         aiProbability,
       });
 
-      // Save history
-      const host =
-        typeof window !== "undefined"
-          ? window.location.hostname
-          : "127.0.0.1";
+      // =====================================================
+      // SAVE HISTORY
+      // ONLY THIS URL WAS CHANGED
+      // =====================================================
 
       const historyResponse = await fetch(
-        `http://${host}:5003/api/history`,
+        "https://deepanalysis-auth.onrender.com/api/history",
         {
           method: "POST",
           headers: {
@@ -164,7 +165,8 @@ export default function AudioDetectionPage() {
         }
       );
 
-      const historyText = await historyResponse.text();
+      const historyText =
+        await historyResponse.text();
 
       if (!historyText.trim()) {
         throw new Error(
@@ -182,7 +184,10 @@ export default function AudioDetectionPage() {
         );
       }
 
-      if (!historyResponse.ok || !historyData.success) {
+      if (
+        !historyResponse.ok ||
+        !historyData.success
+      ) {
         throw new Error(
           historyData.message ||
             historyData.error ||
@@ -210,7 +215,6 @@ export default function AudioDetectionPage() {
 
       {/* Navbar */}
       <nav className="border-b border-white/10 bg-[#060914]/80 backdrop-blur-xl">
-
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
 
           <Link
@@ -241,7 +245,6 @@ export default function AudioDetectionPage() {
           </Link>
 
         </div>
-
       </nav>
 
       {/* Main */}
@@ -401,7 +404,10 @@ export default function AudioDetectionPage() {
   );
 }
 
-/* Logo */
+
+/* =========================================================
+   LOGO
+========================================================= */
 
 function Logo() {
   return (
@@ -411,7 +417,10 @@ function Logo() {
   );
 }
 
-/* Upload */
+
+/* =========================================================
+   UPLOAD BOX
+========================================================= */
 
 function UploadBox({ onChange }) {
   return (
@@ -449,7 +458,10 @@ function UploadBox({ onChange }) {
   );
 }
 
-/* Result */
+
+/* =========================================================
+   RESULT CARD
+========================================================= */
 
 function ResultCard({ result }) {
   const isAI = result.label.toUpperCase().includes("AI");
@@ -514,7 +526,10 @@ function ResultCard({ result }) {
   );
 }
 
-/* Progress */
+
+/* =========================================================
+   PROGRESS
+========================================================= */
 
 function Progress({
   title,
@@ -555,7 +570,10 @@ function Progress({
   );
 }
 
-/* Probability */
+
+/* =========================================================
+   PROBABILITY
+========================================================= */
 
 function Probability({
   title,
@@ -627,7 +645,10 @@ function Probability({
   );
 }
 
-/* Info Card */
+
+/* =========================================================
+   INFO CARD
+========================================================= */
 
 function InfoCard({
   icon,
