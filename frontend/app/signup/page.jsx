@@ -53,7 +53,7 @@ export default function SignupPage() {
 
     try {
       const response = await fetch(
-        "http://localhost:5003/api/signup",
+        "https://deepanalysis-auth.onrender.com/api/signup",
         {
           method: "POST",
           headers: {
