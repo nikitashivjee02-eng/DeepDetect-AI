@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 ============================================================ */
 
 const authUrl = (path) => {
-  return `http://localhost:5003${path}`;
+  return `https://deepanalysis-auth.onrender.com${path}`;
 };
 
 

@@ -5,11 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const authUrl = (path) =>
-  `http://${
-    typeof window === "undefined"
-      ? "localhost"
-      : window.location.hostname
-  }:5003${path}`;
+  `https://deepanalysis-auth.onrender.com${path}`;
 
 export default function HistoryPage() {
   const router = useRouter();
